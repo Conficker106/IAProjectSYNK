@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Login | Secure Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Deep Blue Security Theme */
+        body {
+            background: radial-gradient(circle at 10% 20%, rgb(0, 0, 0) 0%, rgb(64, 64, 64) 90.2%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', sans-serif;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* Background Particles Effect (CSS Only) */
+        .bg-animation {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background-image:
+                radial-gradient(circle at 50% 50%, rgba(76, 29, 149, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(14, 165, 233, 0.2) 0%, transparent 40%);
+            filter: blur(60px);
+        }
+
+        .otp-card {
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 50px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative;
+        }
+
+        /* Glowing border top */
+        .otp-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 20%; right: 20%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(14, 165, 233, 0.8), transparent);
+        }
+
+        .icon-box {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .icon-box i {
+            font-size: 32px;
+            background: linear-gradient(45deg, #0ea5e9, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2 {
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .email-badge {
+            background: rgba(14, 165, 233, 0.15);
+            color: #38bdf8;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid rgba(14, 165, 233, 0.2);
+        }
+
+        .otp-input {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            text-align: center;
+            font-size: 2rem;
+            letter-spacing: 12px;
+            padding: 15px;
+            width: 100%;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            font-family: monospace;
+        }
+
+        .otp-input:focus {
+            background: rgba(0, 0, 0, 0.5);
+            border-color: #0ea5e9;
+            box-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
+            outline: none;
+        }
+
+        .otp-input::placeholder {
+            color: rgba(255, 255, 255, 0.1);
+            letter-spacing: 4px;
+            font-size: 1.5rem;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            width: 100%;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.5);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: white;
+        }
+
+        /* Custom Alert Styles */
+        .alert {
+            background: rgba(255, 50, 50, 0.1);
+            border: 1px solid rgba(255, 50, 50, 0.3);
+            color: #ff8a8a;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            padding: 12px;
+            margin-bottom: 20px;
+        }
+        .alert-success {
+            background: rgba(50, 255, 100, 0.1);
+            border-color: rgba(50, 255, 100, 0.3);
+            color: #8affba;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-animation"></div>
+
+    <div class="otp-card">
+        <div class="icon-box">
+            <i class="fas fa-fingerprint"></i>
+        </div>
+
+        <h2>Verification</h2>
+        <p>
+            Enter the 6-digit code sent to<br>
+            <span class="email-badge">{{ masked_email }}</span>
+        </p>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'success' if category == 'otp_success' else 'danger' }}">
+                        <i class="fas {{ 'fa-check-circle' if category == 'otp_success' else 'fa-exclamation-triangle' }} me-2"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <div class="mb-2">
+                <input type="text" name="otp" class="otp-input" placeholder="000000" maxlength="6" required autocomplete="off" autofocus>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                Verify Code <i class="fas fa-arrow-right ms-2"></i>
+            </button>
+        </form>
+
+        <a href="/login" class="back-link">
+            <i class="fas fa-arrow-left me-1"></i> Return to Login
+        </a>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📋 Assigned Patient Records</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #4ca1af, #c4e0e5);
+            min-height: 100vh;
+        }
+        .container {
+            margin-top: 40px;
+            max-width: 900px;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+        h2 { color: #2c3e50; }
+        .table { background: transparent; }
+        th {
+            background-color: rgba(32, 123, 161, 0.8) !important;
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+        }
+        td { text-align: center; color: #333; font-weight: 500; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="glass-card">
+            <h2 class="text-center mb-4">📋 Assigned Patient Records</h2>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>🧑‍⚕️ Patient</th>
+                            <th>📄 Medical Record</th>
+                            <th>👨‍⚕️ Assigned Doctor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                        <tr>
+                            <td><strong>{{ record.patient }}</strong></td>
+                            <td>{{ record.data }}</td>
+                            <td><span class="badge bg-info text-dark">{{ record.assigned_doctor }}</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <a href="/dashboard" class="btn btn-secondary mt-3 w-100 rounded-pill">⬅️ Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Helvetica, sans-serif; padding: 40px; }
+        h1 { color: #1e3c72; border-bottom: 2px solid #1e3c72; padding-bottom: 10px; }
+        .meta { color: #666; margin-bottom: 30px; }
+        .record {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+        }
+        .label { font-weight: bold; color: #333; }
+    </style>
+</head>
+<body>
+    <h1>Medical Records Report</h1>
+    <div class="meta">
+        <p><strong>Patient Name:</strong> {{ user }}</p>
+        <p><strong>Generated On:</strong> {{ timestamp }}</p>
+    </div>
+
+    {% for r in records %}
+    <div class="record">
+        <p><span class="label">Date:</span> {{ r.date }}</p>
+        <p><span class="label">Doctor:</span> Dr. {{ r.doctor }}</p>
+        <hr style="border: 0; border-top: 1px solid #eee;">
+        <p><span class="label">Diagnosis/Notes:</span><br>{{ r.details }}</p>
+    </div>
+    {% endfor %}
+</body>
+</html>

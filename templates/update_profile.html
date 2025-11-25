@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Profile</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .glass-form {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 100%;
+            max-width: 500px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        .form-control {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 12px;
+        }
+        .form-control:focus { background: rgba(255,255,255,0.3); color: white; }
+        .form-control::placeholder { color: rgba(255,255,255,0.7); }
+        .btn-save {
+            background: white; color: #d76d77; font-weight: bold; border-radius: 50px;
+            width: 100%; padding: 12px; transition: 0.3s;
+        }
+        .btn-save:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body>
+    <div class="glass-form">
+        <h2 class="text-center mb-4">⚙️ Update Profile</h2>
+        <form method="POST">
+            <div class="mb-3">
+                <label class="form-label">New Email (Optional)</label>
+                <input type="email" name="email" class="form-control" placeholder="Enter new email">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">New Password (Optional)</label>
+                <input type="password" name="password" class="form-control" placeholder="Enter new password">
+            </div>
+            <button type="submit" class="btn btn-save">Save Changes</button>
+        </form>
+        <div class="text-center mt-3">
+            <a href="/dashboard" class="text-white text-decoration-none">Cancel</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ role | title }} Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- Glassmorphism CSS -->
+    <style>
+        body {
+            background: linear-gradient(135deg, #1f4037 0%, #99f2c8 100%); /* Soothing Green/Teal Gradient */
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+        }
+
+        .glass-sidebar {
+            width: 260px;
+            height: 100vh;
+            position: fixed;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .content {
+            margin-left: 260px;
+            padding: 40px;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            padding: 12px 15px;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+            color: #fff !important;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            margin-top: 20px;
+        }
+
+        h1, h2 { text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+
+        .btn-logout {
+            background: rgba(220, 53, 69, 0.8);
+            border: none;
+            color: white;
+        }
+        .btn-logout:hover { background: rgba(220, 53, 69, 1); }
+    </style>
+</head>
+<body>
+
+    <!-- Glass Sidebar -->
+    <div class="glass-sidebar">
+        <h3 class="mb-4 text-center border-bottom pb-3">{{ role | title }} Portal</h3>
+        <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link" href="/dashboard">🏠 Home</a></li>
+
+            <!-- ✅ ADDED: Profile Update Link (Visible to everyone) -->
+            <li class="nav-item"><a class="nav-link" href="/update_profile">⚙️ Update Profile</a></li>
+
+            {% if role == 'admin' %}
+            <!-- ✅ SECURE: Only Admins see the Onboard Staff link -->
+            <li class="nav-item"><a class="nav-link" href="/create_staff">🛡️ Onboard Staff</a></li>
+            <li class="nav-item"><a class="nav-link" href="/manage_users">👥 Manage Users</a></li>
+            <li class="nav-item"><a class="nav-link" href="/view_logs">📜 View Access Logs</a></li>
+            <li class="nav-item"><a class="nav-link" href="/logs_dashboard">📊 SIEM Dashboard</a></li>
+            {% endif %}
+
+            {% if role == 'doctor' %}
+            <li class="nav-item"><a class="nav-link" href="/appointments">📅 View Appointments</a></li>
+            <li class="nav-item"><a class="nav-link" href="/view_records">📂 View Patient Records</a></li>
+            <li class="nav-item"><a class="nav-link" href="/add_record">📝 Add Medical Record</a></li>
+            <li class="nav-item"><a class="nav-link" href="/assign_nurse">🩺 Assign Nurse</a></li>
+            {% endif %}
+
+            {% if role == 'patient' %}
+            <li class="nav-item"><a class="nav-link" href="/book_appointment">📌 Book Appointment</a></li>
+            <li class="nav-item"><a class="nav-link" href="/my_appointments">🔍 My Appointments</a></li>
+            <li class="nav-item"><a class="nav-link" href="/view_records">📂 View Medical Records</a></li>
+            <li class="nav-item"><a class="nav-link" href="/view_nursing_notes">📋 View Nursing Notes</a></li>
+            {% endif %}
+
+            {% if role == 'nurse' %}
+            <li class="nav-item"><a class="nav-link" href="/nurse_records">🩺 View Patient Records</a></li>
+            <li class="nav-item"><a class="nav-link" href="/nurse_appointments">📆 View Appointments</a></li>
+            <li class="nav-item"><a class="nav-link" href="/add_nursing_note">📝 Add Nursing Note</a></li>
+            <li class="nav-item"><a class="nav-link" href="/view_nursing_notes">📋 View Nursing Notes</a></li>
+            {% endif %}
+
+            <li class="nav-item mt-4"><a class="nav-link btn-logout text-center" href="/logout">🚪 Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <div class="glass-card">
+            <h1>Welcome Back, {{ current_user.username }}!</h1>
+            <p class="lead">Current Role: <span class="badge bg-light text-dark">{{ role }}</span></p>
+            <hr style="border-color: rgba(255,255,255,0.3);">
+            <p>Select an option from the sidebar to manage your healthcare tasks efficiently.</p>
+        </div>
+    </div>
+
+</body>
+</html>

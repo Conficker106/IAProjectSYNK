@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Medical Record</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .glass-form {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            width: 100%;
+            max-width: 700px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        .form-control, .form-select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+        .form-control:focus, .form-select:focus {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: none;
+        }
+        .form-control::placeholder { color: rgba(255,255,255,0.6); }
+        option { background: #333; color: white; }
+
+        /* AI Button Styling */
+        .btn-ai {
+            background: linear-gradient(45deg, #FF0099, #493240);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            border-radius: 10px;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            margin-bottom: 15px;
+            width: 100%;
+            font-weight: bold;
+        }
+        .btn-ai:hover {
+            background: linear-gradient(45deg, #FF0099, #870e5b);
+            box-shadow: 0 0 15px rgba(255, 0, 153, 0.5);
+            color: white;
+        }
+
+        .btn-save {
+            background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            width: 100%;
+        }
+        .btn-save:hover { opacity: 0.9; color: white; }
+
+        /* Loader */
+        .spinner-border { width: 1.2rem; height: 1.2rem; display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="glass-form mx-auto">
+            <h2 class="mb-4 text-center">📝 Add Medical Record</h2>
+
+            <form method="POST">
+                <div class="mb-3">
+                    <label for="patient" class="form-label">Select Patient:</label>
+                    <select class="form-select" name="patient" required>
+                        {% for patient in patients %}
+                            <option value="{{ patient }}">{{ patient }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- AI Section (This is what you were missing!) -->
+                <div class="mb-3">
+                    <label class="form-label text-info">✨ AI Assistant (Optional)</label>
+                    <textarea id="roughNotes" class="form-control mb-2" rows="2" placeholder="Type rough notes here (e.g., 'Fever 102, sore throat, prescribed Amoxicillin')..."></textarea>
+                    <button type="button" class="btn btn-ai" onclick="generateSOAP()">
+                        <span id="aiSpinner" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                        Generate SOAP Note with Gemini
+                    </button>
+                </div>
+
+                <div class="mb-3">
+                    <label for="record" class="form-label">Final Record (Editable):</label>
+                    <textarea class="form-control" id="finalRecord" name="record" rows="6" required placeholder="Final medical record will appear here..."></textarea>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-save">Save Record</button>
+                    <a href="/dashboard" class="btn btn-outline-light" style="border-radius: 50px;">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        async function generateSOAP() {
+            const roughNotes = document.getElementById('roughNotes').value;
+            const finalRecord = document.getElementById('finalRecord');
+            const btn = document.querySelector('.btn-ai');
+            const spinner = document.getElementById('aiSpinner');
+
+            if (!roughNotes.trim()) {
+                alert("Please enter some rough notes first.");
+                return;
+            }
+
+            // UI Loading State
+            btn.disabled = true;
+            spinner.style.display = 'inline-block';
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Generating...';
+
+            try {
+                const response = await fetch('/generate_ai_record', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ notes: roughNotes })
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    alert("AI Error: " + data.error);
+                } else {
+                    // Typewriter effect for the result
+                    finalRecord.value = data.soap_note;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert("Failed to connect to AI server.");
+            } finally {
+                // Reset UI
+                btn.disabled = false;
+                spinner.style.display = 'none';
+                btn.innerHTML = '✨ Regenerate with Gemini';
+            }
+        }
+    </script>
+</body>
+</html>

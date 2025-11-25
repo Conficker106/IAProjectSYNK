@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Access Control System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            text-align: center;
+            max-width: 600px;
+            color: white;
+        }
+        .glass-card h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .text-muted-glass {
+            color: rgba(255, 255, 255, 0.8) !important;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+        .btn-custom {
+            font-size: 1.1rem;
+            padding: 12px 30px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            width: 150px;
+            margin: 10px;
+        }
+        .btn-login {
+            background: white;
+            color: #764ba2;
+            border: none;
+            font-weight: bold;
+        }
+        .btn-login:hover {
+            background: #f0f0f0;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .btn-register {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+            font-weight: bold;
+        }
+        .btn-register:hover {
+            background: white;
+            color: #764ba2;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="glass-card">
+        <h1>🏥 Healthcare Access</h1>
+        <p class="text-muted-glass">Secure management for patient records, appointments, and medical staff.</p>
+        <div class="mt-4">
+            <a href="/login" class="btn btn-custom btn-login">🔐 Login</a>
+            <a href="/register" class="btn btn-custom btn-register">📝 Register</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

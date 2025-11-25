@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Access Denied</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+      body {
+          background: linear-gradient(135deg, #870000 0%, #190A05 100%); /* Dark Red Alert Theme */
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+      }
+      .glass-alert {
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(10px);
+          border-radius: 20px;
+          padding: 50px;
+          border: 2px solid rgba(255, 50, 50, 0.3);
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+          text-align: center;
+          max-width: 500px;
+      }
+      h2 { font-size: 2.5rem; margin-bottom: 20px; text-shadow: 0 0 10px rgba(255,0,0,0.5); }
+      .btn-back {
+          background: rgba(255, 255, 255, 0.2);
+          color: white;
+          border: 1px solid white;
+          border-radius: 30px;
+          padding: 10px 30px;
+          margin-top: 20px;
+          transition: 0.3s;
+      }
+      .btn-back:hover {
+          background: white;
+          color: #870000;
+          transform: scale(1.05);
+      }
+  </style>
+</head>
+<body>
+<div class="container">
+    <div class="glass-alert mx-auto">
+      <h2 class="text-danger text-white">🚫 Access Denied</h2>
+      <p class="lead">You do not have permission to view this page.</p>
+      <hr style="border-color: rgba(255,255,255,0.2)">
+      <a href="/dashboard" class="btn btn-back text-decoration-none">Back to Dashboard</a>
+    </div>
+</div>
+</body>
+</html>

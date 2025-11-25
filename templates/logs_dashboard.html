@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Analytics Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #0f172a; /* Dark SIEM background */
+            color: #e2e8f0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .container-fluid {
+            padding: 30px;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        h2, h4 {
+            color: #38bdf8; /* Light blue accent */
+            font-weight: 600;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #fbbf24; /* Amber for alerts/stats */
+        }
+        .btn-back {
+            background-color: #334155;
+            color: white;
+            border: 1px solid #475569;
+        }
+        .btn-back:hover {
+            background-color: #475569;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>🛡️ Security Analytics Dashboard (SIEM View)</h2>
+            <a href="/dashboard" class="btn btn-back">⬅️ Back to Portal</a>
+        </div>
+
+        <!-- Summary Stats Row -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="glass-card stat-card">
+                    <h4>Total Events</h4>
+                    <div class="stat-number">{{ total_events }}</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="glass-card stat-card">
+                    <h4>Unique Users</h4>
+                    <div class="stat-number">{{ unique_users }}</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="glass-card stat-card">
+                    <h4>System Status</h4>
+                    <div class="stat-number" style="color: #4ade80;">Active Monitoring</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row 1 -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="glass-card">
+                    <h4>User Activity by Role</h4>
+                    <div class="chart-container">
+                        <canvas id="roleChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="glass-card">
+                    <h4>Top Actions Performed</h4>
+                    <div class="chart-container">
+                        <canvas id="actionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row 2 -->
+        <div class="row">
+            <div class="col-12">
+                <div class="glass-card">
+                    <h4>Activity Timeline (Last 24 Hours)</h4>
+                    <div class="chart-container">
+                        <canvas id="timelineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ✅ THE FIX: Hidden Data Container -->
+    <!-- We put the Python data here so PyCharm doesn't get confused by JS syntax -->
+    <div id="chartData"
+         data-roles='{{ role_counts | tojson | safe }}'
+         data-actions='{{ action_counts | tojson | safe }}'
+         style="display: none;">
+    </div>
+
+    <script>
+        // 1. Retrieve data securely from the hidden div
+        const dataElement = document.getElementById('chartData');
+
+        // Parse the JSON strings back into JavaScript Objects
+        const roleData = JSON.parse(dataElement.getAttribute('data-roles'));
+        const actionData = JSON.parse(dataElement.getAttribute('data-actions'));
+
+        // 2. Role Distribution Chart (Pie)
+        const ctxRole = document.getElementById('roleChart').getContext('2d');
+        new Chart(ctxRole, {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(roleData),
+                datasets: [{
+                    data: Object.values(roleData),
+                    backgroundColor: ['#38bdf8', '#a855f7', '#fbbf24', '#f472b6'],
+                    borderColor: '#1e293b',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'right', labels: { color: '#e2e8f0' } }
+                }
+            }
+        });
+
+        // 3. Action Frequency Chart (Bar)
+        const ctxAction = document.getElementById('actionChart').getContext('2d');
+        new Chart(ctxAction, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(actionData),
+                datasets: [{
+                    label: 'Count',
+                    data: Object.values(actionData),
+                    backgroundColor: '#4ade80',
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+                    x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+
+        // 4. Timeline Chart (Line) - Visual Simulation
+        const ctxTimeline = document.getElementById('timelineChart').getContext('2d');
+        new Chart(ctxTimeline, {
+            type: 'line',
+            data: {
+                labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '23:59'],
+                datasets: [{
+                    label: 'Events',
+                    data: [5, 12, 25, 40, 35, 20, 15],
+                    borderColor: '#f472b6',
+                    tension: 0.4,
+                    fill: true,
+                    backgroundColor: 'rgba(244, 114, 182, 0.1)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+                    x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }
+                },
+                plugins: {
+                    legend: { labels: { color: '#e2e8f0' } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

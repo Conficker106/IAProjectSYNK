@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Appointments</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #7F7FD5, #86A8E7, #91EAE4);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .glass-box {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            max-width: 800px;
+            margin: 40px auto;
+        }
+        h2 { color: #4a4a4a; font-weight: bold; text-align: center; }
+        .table thead th {
+            background-color: #6a11cb;
+            color: white;
+            border: none;
+        }
+        .table tbody tr { background: rgba(255,255,255,0.5); transition: 0.2s; }
+        .table tbody tr:hover { background: rgba(255,255,255,0.8); transform: scale(1.01); }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="glass-box">
+            <h2>🗓️ My Appointment Requests</h2>
+            <div class="table-responsive mt-4">
+                <table class="table table-hover border-0">
+                    <thead>
+                        <tr>
+                            <th>Doctor</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointments %}
+                        <tr>
+                            <td class="fw-bold">{{ appointment.doctor }}</td>
+                            <td>{{ appointment.date }}</td>
+                            <td>{{ appointment.time }}</td>
+                            <td>
+                                <span class="badge {% if appointment.status == 'approved' %}bg-success{% else %}bg-warning text-dark{% endif %}">
+                                    {{ appointment.status }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-grid gap-2 mt-3">
+                <a href="/dashboard" class="btn btn-outline-dark rounded-pill">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

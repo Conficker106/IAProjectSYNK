@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>429 Too Many Requests</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fdfbf7;
+            color: #374151;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-width: 500px;
+            border: 1px solid #e5e7eb;
+        }
+        h1 { color: #d97706; font-size: 2rem; margin-bottom: 1rem; }
+        p { margin-bottom: 1.5rem; line-height: 1.6; }
+        .btn {
+            background-color: #059669;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .btn:hover { background-color: #047857; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>429 - Too Many Requests</h1>
+        <p>You have exceeded the request limit. Please wait a moment and try again.</p>
+        <p><em>{{ error }}</em></p>
+        <a href="/" class="btn">Go Home</a>
+    </div>
+</body>
+</html>

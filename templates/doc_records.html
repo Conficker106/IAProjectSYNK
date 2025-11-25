@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assigned Patient Records</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #360033 0%, #0b8793 100%);
+            min-height: 100vh;
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .container { margin-top: 60px; }
+
+        .glass-table-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .table { color: white; margin-top: 20px; }
+        .table th {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffdd00;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .table td {
+            background: transparent;
+            color: white;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .table-hover tbody tr:hover td {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-delete {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            border: none;
+            border-radius: 50px;
+            padding: 12px;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(255, 65, 108, 0.4);
+        }
+        .btn-delete:hover { background: linear-gradient(45deg, #ff4b2b, #ff416c); }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="glass-table-container">
+            <h2 class="text-center mb-4">📋 Assigned Patient Records</h2>
+
+            <form action="/delete_records" method="POST" onsubmit="return confirmDelete()">
+                <div class="table-responsive">
+                    <table class="table table-hover text-center align-middle">
+                        <thead>
+                            <tr>
+                                <th>🗑️ Select</th>
+                                <th>🧑‍⚕️ Patient</th>
+                                <th>📄 Medical Record</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in records %}
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="form-check-input bg-transparent border-light" name="record_ids" value="{{ record._id }}">
+                                </td>
+                                <td><strong style="font-size: 1.1em;">{{ record.patient }}</strong></td>
+                                <td>{{ record.data }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <button type="submit" class="btn btn-delete">🗑️ Delete Selected Records</button>
+            </form>
+            <div class="text-center mt-3">
+                 <a href="/dashboard" class="btn btn-outline-light rounded-pill px-4">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+
+<script>
+function confirmDelete() {
+    const checkboxes = document.querySelectorAll('input[name="record_ids"]:checked');
+    let selected = [];
+    checkboxes.forEach(cb => selected.push(cb.value));  // Collect selected IDs
+
+    console.log("Selected Records:", selected);  // ✅ Debugging step
+    if (selected.length === 0) {
+        alert("Please select at least one record to delete.");
+        return false; // Stop form submission
+    }
+    return confirm("Are you sure you want to delete the selected records?");
+}
+</script>
+</body>
+</html>
